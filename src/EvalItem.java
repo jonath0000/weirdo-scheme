@@ -62,6 +62,18 @@ public class EvalItem {
 		return value;
 	}
 	
+	public Environment getEnv() {
+		return env;
+	}
+	
+	public EvalItem getBody() {
+		return body;
+	}
+	
+	public EvalItem getParams() {
+		return params;
+	}
+	
 	public EvalItem callLambda(ArrayList<EvalItem> args) throws Exception {
 		Environment innerEnv = new Environment(env);
 		for (int i = 0; i < params.getList().size(); i++) {

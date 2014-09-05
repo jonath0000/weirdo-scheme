@@ -16,7 +16,7 @@ public class EvaluatorTest {
 			parsed = ExpressionParser.read(" (set! nizze 3)");
 			System.out.println(Evaluator.evaluate(parsed, globalEnv));
 			
-			parsed = ExpressionParser.read(" (if (quote ) (quote 4) (quote 5))");
+			parsed = ExpressionParser.read(" (if (quote ) (quote 4) (quote 5 4 3))");
 			System.out.println(Evaluator.evaluate(parsed, globalEnv));
 			
 			parsed = ExpressionParser.read(" (begin (quote 1) (quote 4) (quote 5))");
@@ -25,8 +25,16 @@ public class EvaluatorTest {
 			parsed = ExpressionParser.read(" (lambda (arg1 arg2 arg3) (quote arg1 1 2 arg2 ))");
 			System.out.println(Evaluator.evaluate(parsed, globalEnv));
 			
-		} catch (Exception e) {
-			System.out.println(e);
+			parsed = ExpressionParser.read(" (define funkisen (lambda (arg1 arg2 arg3) (if (eq arg3 3) (quote sant) (quote falskt) )))");
+			System.out.println(Evaluator.evaluate(parsed, globalEnv));
+			
+			parsed = ExpressionParser.read(" (funkisen 1 2 3)");
+			System.out.println(Evaluator.evaluate(parsed, globalEnv));
+			
+		} catch (LispEvaluatorException e1) { 
+			System.out.println(e1);
+		} catch (LispParserException e2) {
+			System.out.println(e2);
 		}
 		
 		System.out.println(globalEnv);

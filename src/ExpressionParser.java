@@ -3,16 +3,16 @@ import java.util.ArrayList;
 
 public class ExpressionParser {
 	
-	public static EvalItem read(String program) throws Exception {
+	public static EvalItem read(String program) throws LispParserException {
 		ArrayList<String> tokens = tokenize(program);
 		System.out.println("Tokens: " + tokens);
 		EvalItem parsed = readFrom(tokens);
 		return parsed;
 	}
 	
-	private static EvalItem readFrom(ArrayList<String> tokens) throws Exception {
+	private static EvalItem readFrom(ArrayList<String> tokens) throws LispParserException {
 		if (tokens.isEmpty()) {
-			throw new Exception("Empty expression!");
+			throw new LispParserException("Empty expression!");
 		}
 		String token = tokens.remove(0);
 		if (token.equals("(")) {
@@ -24,7 +24,7 @@ public class ExpressionParser {
 			return new EvalItem(evalItems);
 		}
 		if (token.equals(")")) {
-			throw new Exception("Unexpected ) !");
+			throw new LispParserException("Unexpected ) !");
 		} 
 		return atom(token);
 	}

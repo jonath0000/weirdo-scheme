@@ -30,6 +30,10 @@ public class Environment {
 	
 	@Override
 	public String toString() {
-		return "Environment: " + map.toString();
+		String descr = "Environment: ";
+		for (String key : map.keySet()) {
+			descr += key + ", ";
+		}
+		return descr;
 	}
 }
