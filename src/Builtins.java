@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 
 public class Builtins {
-	public static EvalItem callBuiltin(String name, ArrayList<EvalItem> args) {
+	public static EvalItem callBuiltin(String name, ArrayList<EvalItem> args, Environment env) {
 		if (name.equals("+")) {
 			int value = 0;
 			for (EvalItem arg : args) {
@@ -17,6 +17,12 @@ public class Builtins {
 				}
 			}
 			return new EvalItem("false");
+		} else if (name.equals("printenv")) {
+			System.out.println("<printenv>" + env);
+			return new EvalItem(new ArrayList<EvalItem>());
+		} else if (name.equals("print")) {
+			System.out.println("<print> " + args);
+			return new EvalItem(new ArrayList<EvalItem>());
 		}
 		
 		return null;

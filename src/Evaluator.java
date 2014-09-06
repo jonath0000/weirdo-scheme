@@ -96,7 +96,7 @@ public class Evaluator {
 						}
 					} else {
 						System.out.println("Calling builtin " + proc.getValue() + " with args {" + args + "}");
-						EvalItem returnVal = Builtins.callBuiltin(proc.getValue(), args);
+						EvalItem returnVal = Builtins.callBuiltin(proc.getValue(), args, env);
 						if (returnVal == null) {
 							throw new LispEvaluatorException("Undefined procedure " + proc.getValue());
 						} else {

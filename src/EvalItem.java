@@ -74,14 +74,6 @@ public class EvalItem {
 		return params;
 	}
 	
-	public EvalItem callLambda(ArrayList<EvalItem> args) throws Exception {
-		Environment innerEnv = new Environment(env);
-		for (int i = 0; i < params.getList().size(); i++) {
-			innerEnv.add(params.getList().get(i).getValue(), args.get(i));
-		}
-		return Evaluator.evaluate(body, innerEnv);
-	}
-	
 	@Override
 	public String toString() {
 		if (isValue()) {
