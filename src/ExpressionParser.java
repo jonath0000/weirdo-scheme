@@ -5,7 +5,6 @@ public class ExpressionParser {
 	
 	public static EvalItem read(String program) throws LispParserException {
 		ArrayList<String> tokens = tokenize(program);
-		System.out.println("Tokens: " + tokens);
 		EvalItem parsed = readFrom(tokens);
 		return parsed;
 	}

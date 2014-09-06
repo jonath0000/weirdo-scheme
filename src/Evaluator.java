@@ -89,13 +89,10 @@ public class Evaluator {
 					if (proc.isLambda()) {
 						evalItem = proc.getBody();
 						env = new Environment(env);
-						System.out.println("Calling lambda with params={" + 
-								proc.getParams() + "} args={" + args + "}");
 						for (int i = 0; i < proc.getParams().getList().size(); i++) {
 							env.add(proc.getParams().getList().get(i).getValue(), args.get(i));
 						}
 					} else {
-						System.out.println("Calling builtin " + proc.getValue() + " with args {" + args + "}");
 						EvalItem returnVal = Builtins.callBuiltin(proc.getValue(), args, env);
 						if (returnVal == null) {
 							throw new LispEvaluatorException("Undefined procedure " + proc.getValue());
