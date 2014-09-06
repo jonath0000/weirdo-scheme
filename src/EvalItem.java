@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.List;
 
 
 public class EvalItem {
@@ -7,7 +7,7 @@ public class EvalItem {
 	private String value = null;
 	
 	// list properties
-	private ArrayList<EvalItem> list = null;
+	private List<EvalItem> list = null;
 	
 	// lambda properties
 	private EvalItem params = null;
@@ -26,7 +26,7 @@ public class EvalItem {
 	 * As list.
 	 * @param list
 	 */
-	public EvalItem(ArrayList<EvalItem> list) {
+	public EvalItem(List<EvalItem> list) {
 		this.list = list;
 	}
 	
@@ -54,7 +54,7 @@ public class EvalItem {
 		return (params != null && body != null && env != null);
 	}
 	
-	public ArrayList<EvalItem> getList() {
+	public List<EvalItem> getList() {
 		return list;
 	}
 	
@@ -74,22 +74,30 @@ public class EvalItem {
 		return params;
 	}
 	
-	@Override
-	public String toString() {
+	public String toStringSelectRecurse(boolean recurse) {
 		if (isValue()) {
 			return value;
 		}
 		if (isList()) {
 			String listFormatted = "(";
 			for (EvalItem i : list) {
-				listFormatted += " " + i + " ";
+				listFormatted += " " + i.toStringSelectRecurse(recurse) + " ";
 			}
 			listFormatted += ")";
 			return listFormatted;
 		}
 		if (isLambda()) {
-			return "LAMBDA<<" + params + body + env + ">>";
+			if (recurse) {
+				return "LAMBDA<<" + params + body + env + ">>";
+			} else {
+				return "LAMBDA<" + params + body + ">";
+			}
 		}
 		return "ERROR";
+	}
+
+	@Override
+	public String toString() {
+		return toStringSelectRecurse(true);
 	}
 }

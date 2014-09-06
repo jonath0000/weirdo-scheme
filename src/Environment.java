@@ -32,8 +32,9 @@ public class Environment {
 	public String toString() {
 		String descr = "Environment: ";
 		for (String key : map.keySet()) {
-			descr += key + ", ";
+			descr += key + "=" + map.get(key).toStringSelectRecurse(false) + ", ";
 		}
+		descr += "OUTER{" + outer + "}";
 		return descr;
 	}
 }

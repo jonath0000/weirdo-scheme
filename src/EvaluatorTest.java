@@ -6,7 +6,7 @@ import org.junit.Test;
 public class EvaluatorTest {
 
 	@Test
-	public void test() {
+	public void keywordTest() {
 		Environment globalEnv = new Environment(null);
 		EvalItem parsed = null;
 		try {
@@ -21,6 +21,9 @@ public class EvaluatorTest {
 			parsed = ExpressionParser.read(" (if (quote ) (quote 4) (quote 5 4 3))");
 			assertEquals("4", Evaluator.evaluate(parsed, globalEnv).getList().get(1).getValue());
 			
+			parsed = ExpressionParser.read(" (if (eq theVar 3 ) (quote 7) (quote 5 4 3))");
+			assertEquals("7", Evaluator.evaluate(parsed, globalEnv).getList().get(0).getValue());
+			
 			parsed = ExpressionParser.read(" (begin (quote 1) (quote 4) (quote 5))");
 			assertEquals("5", Evaluator.evaluate(parsed, globalEnv).getList().get(0).getValue());
 			
@@ -34,18 +37,32 @@ public class EvaluatorTest {
 			parsed = ExpressionParser.read(" (theFunc 1 2 3)");
 			assertEquals("thatsRight", Evaluator.evaluate(parsed, globalEnv).getList().get(0).getValue());
 			
-			parsed = ExpressionParser.read("(define fact (lambda (n) (if ((= n 0) 1) ((= n 1) 1) (* n (fact (- n 1))))))");
-			Evaluator.evaluate(parsed, globalEnv);
-			parsed = ExpressionParser.read("(fact 3)");
-			// Evaluator.evaluate(parsed, globalEnv); TODO: gets stuck in loop :(
-			
-		} catch (LispEvaluatorException e1) { 
+		} catch (LispEvaluatorException e1) {
 			System.out.println(e1);
 		} catch (LispParserException e2) {
 			System.out.println(e2);
 		}
-		
-		System.out.println(globalEnv);
+	}
+	
+	@Test
+	public void recursionTest() {
+		Environment globalEnv = new Environment(null);
+		EvalItem parsed = null;
+		try {
+			parsed = ExpressionParser.read("(define fact (lambda (n) (if (eq n 0) (quote 1) (* n (fact (+ n -1))))))");
+			
+			Evaluator.evaluate(parsed, globalEnv);
+			parsed = ExpressionParser.read("(fact 3)");
+			assertEquals("6", Evaluator.evaluate(parsed, globalEnv));
+			
+			parsed = ExpressionParser.read("(fact 10)");
+			assertEquals("3628800", Evaluator.evaluate(parsed, globalEnv));
+			
+		} catch (LispEvaluatorException e1) {
+			System.out.println(e1);
+		} catch (LispParserException e2) {
+			System.out.println(e2);
+		}
 	}
 
 }

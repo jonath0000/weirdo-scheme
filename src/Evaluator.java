@@ -1,10 +1,22 @@
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Evaluator {
+	
+	public static final int maxRecursion = 100;
+	
+	public static final boolean verbose = true;
+	
 	public static EvalItem evaluate(EvalItem evalItem, Environment env) throws LispEvaluatorException {
 		
+		int loops = 0;
 		while (true) {
+			
+			loops++;
+			if (loops > maxRecursion) {
+				throw new LispEvaluatorException("Max recursion reached (" + loops + ")");
+			}
 			
 			if (evalItem.isValue()) {
 				Environment envWithVar = env.findEnvironmentWithVar(evalItem.getValue());
@@ -19,17 +31,16 @@ public class Evaluator {
 				EvalItem first = evalItem.getList().get(0);
 				if (first.isValue()) {
 					String keyword = first.getValue();
-					ArrayList<EvalItem> list = evalItem.getList();
-					list.remove(0);
+					List<EvalItem> list = evalItem.getList();
 					
 					if (keyword.equals("quote")) {
-						return new EvalItem(list);
+						return new EvalItem(list.subList(1, list.size()));
 					}
 	
 					if (keyword.equals("if")) {
-						EvalItem test = list.remove(0);
-						EvalItem conseq = list.remove(0);
-						EvalItem alt = list.remove(0);
+						EvalItem test = list.get(1);
+						EvalItem conseq = list.get(2);
+						EvalItem alt = list.get(3);
 						EvalItem testResult = evaluate(test, env);
 						if ((testResult.isList() && testResult.getList().size() > 0)
 								|| testResult.isValue() && testResult.getValue().equals("true")) {
@@ -40,13 +51,13 @@ public class Evaluator {
 					}
 	
 					if (keyword.equals("set!")) {
-						String var = list.remove(0).getValue();
+						String var = list.get(1).getValue();
 						Environment envWithVar = env.findEnvironmentWithVar(var);
 						EvalItem itemToAdd;
 						if (list.size() > 1) {
-							itemToAdd = evaluate(new EvalItem(list), env);
+							itemToAdd = evaluate(new EvalItem(list.subList(1, list.size())), env);
 						} else {
-							itemToAdd = evaluate(list.remove(0), env);
+							itemToAdd = evaluate(list.get(1), env);
 						}
 						if (envWithVar != null) {
 							envWithVar.add(var, itemToAdd);
@@ -55,20 +66,20 @@ public class Evaluator {
 					}
 	
 					if (keyword.equals("define")) {
-						String var = list.remove(0).getValue();
+						String var = list.get(1).getValue();
 						EvalItem itemToAdd;
 						if (list.size() > 1) {
-							itemToAdd = evaluate(new EvalItem(list), env);
+							itemToAdd = evaluate(new EvalItem(list.subList(1, list.size())), env);
 						} else {
-							itemToAdd = evaluate(list.remove(0), env);
+							itemToAdd = evaluate(list.get(2), env);
 						}
 						env.add(var, itemToAdd);
 						return new EvalItem(new ArrayList<EvalItem>());
 					}
 					
 					if (keyword.equals("lambda")) {
-						EvalItem params = list.remove(0);
-						EvalItem body = list.remove(0);
+						EvalItem params = list.get(1);
+						EvalItem body = list.get(2);
 						return new EvalItem(params, body, env);
 					}
 					
@@ -92,7 +103,13 @@ public class Evaluator {
 						for (int i = 0; i < proc.getParams().getList().size(); i++) {
 							env.add(proc.getParams().getList().get(i).getValue(), args.get(i));
 						}
+						if (verbose) {
+							System.out.println("Calling lambda " + first.getValue() + " with env=" + env);
+						}
 					} else {
+						if (verbose) {
+							System.out.println("Calling builtin " + proc.getValue() + " with args=" + args);
+						}
 						EvalItem returnVal = Builtins.callBuiltin(proc.getValue(), args, env);
 						if (returnVal == null) {
 							throw new LispEvaluatorException("Undefined procedure " + proc.getValue());
