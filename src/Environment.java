@@ -7,7 +7,7 @@ public class Environment {
 	
 	public Environment(Environment outer) {
 		this.outer = outer;
-		map = new HashMap<>();
+		map = new HashMap<String, EvalItem>();
 	}
 	
 	public void add(String var, EvalItem value) {
@@ -30,11 +30,11 @@ public class Environment {
 	
 	@Override
 	public String toString() {
-		String descr = "Environment: ";
+		String descr = "Environment=(";
 		for (String key : map.keySet()) {
 			descr += key + "=" + map.get(key).toStringSelectRecurse(false) + ", ";
 		}
-		descr += "OUTER{" + outer + "}";
-		return descr;
+		descr += "OuterEnvironment={" + outer + "}";
+		return descr + ")";
 	}
 }

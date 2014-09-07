@@ -6,7 +6,7 @@ public class Evaluator {
 	
 	public static final int maxRecursion = 100;
 	
-	public static final boolean verbose = true;
+	public static boolean verbose = false;
 	
 	public static EvalItem evaluate(EvalItem evalItem, Environment env) throws LispEvaluatorException {
 		
@@ -34,7 +34,11 @@ public class Evaluator {
 					List<EvalItem> list = evalItem.getList();
 					
 					if (keyword.equals("quote")) {
-						return new EvalItem(list.subList(1, list.size()));
+						EvalItem ret = new EvalItem(list.subList(1, list.size()));
+						if (ret.isList() && ret.getList().size() <= 1) {
+							ret = ret.getList().get(0);
+						}
+						return ret;
 					}
 	
 					if (keyword.equals("if")) {
@@ -54,10 +58,10 @@ public class Evaluator {
 						String var = list.get(1).getValue();
 						Environment envWithVar = env.findEnvironmentWithVar(var);
 						EvalItem itemToAdd;
-						if (list.size() > 1) {
-							itemToAdd = evaluate(new EvalItem(list.subList(1, list.size())), env);
+						if (list.size() > 3) {
+							itemToAdd = evaluate(new EvalItem(list.subList(2, list.size())), env);
 						} else {
-							itemToAdd = evaluate(list.get(1), env);
+							itemToAdd = evaluate(list.get(2), env);
 						}
 						if (envWithVar != null) {
 							envWithVar.add(var, itemToAdd);
@@ -68,8 +72,8 @@ public class Evaluator {
 					if (keyword.equals("define")) {
 						String var = list.get(1).getValue();
 						EvalItem itemToAdd;
-						if (list.size() > 1) {
-							itemToAdd = evaluate(new EvalItem(list.subList(1, list.size())), env);
+						if (list.size() > 3) {
+							itemToAdd = evaluate(new EvalItem(list.subList(2, list.size())), env);
 						} else {
 							itemToAdd = evaluate(list.get(2), env);
 						}
@@ -93,9 +97,10 @@ public class Evaluator {
 					
 					// keyword treated as function name.
 					EvalItem proc = evaluate(first, env);
-					ArrayList<EvalItem> args = new ArrayList<>();
-					for (EvalItem i : list) {
-						args.add(evaluate(i, env));
+					ArrayList<EvalItem> args = new ArrayList<EvalItem>();
+					for (int i = 1; i < list.size(); i++) {
+						EvalItem item = list.get(i);
+						args.add(evaluate(item, env));
 					}
 					if (proc.isLambda()) {
 						evalItem = proc.getBody();
