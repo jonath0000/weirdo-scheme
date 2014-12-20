@@ -1,3 +1,4 @@
+package net.tapire_solutions.weirdoscheme;
 
 public class LispEvaluatorException extends Exception {
 	private static final long serialVersionUID = 1L;

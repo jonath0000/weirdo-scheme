@@ -1,3 +1,4 @@
+package net.tapire_solutions.weirdoscheme;
 
 public class LispParserException extends Exception {
 	private static final long serialVersionUID = 1L;

@@ -1,3 +1,4 @@
+package net.tapire_solutions.weirdoscheme;
 import static org.junit.Assert.*;
 
 import org.junit.Test;

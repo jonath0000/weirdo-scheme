@@ -3,3 +3,6 @@ bin/
 .classpath
 .project
 *.*~
+.gradle
+.settings
+build/
