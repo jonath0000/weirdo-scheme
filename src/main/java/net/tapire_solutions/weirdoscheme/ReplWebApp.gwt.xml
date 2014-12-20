@@ -1,0 +1,5 @@
+<module rename-to="replapp">
+  <inherits name='com.google.gwt.user.User'/>
+  <inherits name='net.tapire_solutions.weirdoscheme'/>
+  <entry-point class="net.tapire_solutions.weirdoscheme.client.ReplWebApp"/>
+</module> 
