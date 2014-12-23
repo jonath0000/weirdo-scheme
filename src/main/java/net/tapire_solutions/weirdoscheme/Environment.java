@@ -35,7 +35,9 @@ public class Environment {
 		for (String key : map.keySet()) {
 			descr += key + "=" + map.get(key).toStringSelectRecurse(false) + ", ";
 		}
-		descr += "OuterEnvironment={" + outer + "}";
+		if (outer != null) {
+			descr += "OuterEnvironment={" + outer + "}";
+		}
 		return descr + ")";
 	}
 }
