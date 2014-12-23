@@ -170,7 +170,7 @@ public class Builtins {
 		BuiltIn plus = new PlusBuiltIn();
 		builtIns.put(plus.getSymbol(), plus);
 		BuiltIn minus = new MinusBuiltIn();
-		builtIns.put(minus.getSymbol(), plus);
+		builtIns.put(minus.getSymbol(), minus);
 		BuiltIn multiply = new MultiplyBuiltIn();
 		builtIns.put(multiply.getSymbol(), multiply);
 		BuiltIn divide = new DivideBuiltIn();

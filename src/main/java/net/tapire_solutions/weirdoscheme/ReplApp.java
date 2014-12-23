@@ -15,6 +15,7 @@ public class ReplApp {
 	}
 	
 	public static String evaluateLine(String line, Environment globalEnv) {
+		line = line.replace("\n", " ");
 		try {
 			List<EvalItem> parsed = ExpressionParser.read(line);
 			EvalItem output = null;
