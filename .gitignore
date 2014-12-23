@@ -1,4 +1,6 @@
 bin/
+lisp/
+dist_to_ts.sh
 .DS_Store
 .classpath
 .project
