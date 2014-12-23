@@ -3,7 +3,15 @@ weirdo-scheme
 
 A Scheme/LISP interpreter, mostly based on lis.py
 
-Current status: Some commands work, recursion not so much.
+Current status: On par with lis.py. Has nice web interface.
+
+Web interface: build with 
+>> gradlew war
+Or goto [this example](http://www.tapire-solutions.net/lisp/)
+
+Java interface: build with 
+>> gradlew installApp 
+>> ./build/libs/bin/weirdo-scheme
 
 Example output:
 ---------------

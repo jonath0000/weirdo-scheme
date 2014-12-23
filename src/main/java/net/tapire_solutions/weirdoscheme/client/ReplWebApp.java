@@ -23,12 +23,18 @@ public class ReplWebApp implements EntryPoint {
     	return globalEnv.toString();
     }
     
+    public static String getHelp() {
+    	return ReplApp.getHelp();
+    }
+    
     private native void exportMethods(ReplWebApp instance) /*-{
     	$wnd.evalExpression =
     		$entry(@net.tapire_solutions.weirdoscheme.client.ReplWebApp::evalExpression(Ljava/lang/String;));
     	$wnd.getEnvironment =
     		$entry(@net.tapire_solutions.weirdoscheme.client.ReplWebApp::getEnvironment());
-    	
+    	$wnd.getHelp =
+    		$entry(@net.tapire_solutions.weirdoscheme.client.ReplWebApp::getHelp());
+    	if ($wnd.onGwtLoaded && typeof $wnd.onGwtLoaded == 'function') $wnd.onGwtLoaded();
   	}-*/;
 
 }

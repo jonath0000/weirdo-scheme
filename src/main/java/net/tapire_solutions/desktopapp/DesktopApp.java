@@ -17,6 +17,11 @@ public class DesktopApp {
 				"-------------------------\n" +
 				"--file [file] : Run file.\n" +
 				"--help Show this message.\n");
+		
+		System.out.println(
+				"-------------------------\n" +
+				"Language:\n" +
+				ReplApp.getHelp());
 	}
 	
 	private static String readFileIntoString(String path) throws IOException {
@@ -85,8 +90,10 @@ public class DesktopApp {
 			String line = null;
 			try {
 				line = br.readLine();
-				if (line.trim().equals("exit") || line == null) {
+				if (line.trim().equals("exit") || line == null || line.isEmpty()) {
 					exit = true;
+				} else if (line.trim().equals("help")) {
+					showHelp();
 				} else {
 					String output = ReplApp.evaluateLine(line, globalEnv);
 					System.out.println("===> " + output);

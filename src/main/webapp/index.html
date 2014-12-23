@@ -1,27 +1,66 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Evaluator</title>
-    <script type="text/javascript" language="javascript"
-	    src="replapp/replapp.nocache.js"></script>
-	<script src="ui.js"></script>
-  </head>
-  <body>
-    <table align="center">
-      <tr>
-	<td width="400">
-	  <textarea type="text" id="code" rows="10">(+ 1 2)</textarea>
-	  <div class="button">
-            <button id="evaluate">Evaluate</button>
-	  </div>
-	</td>
-	<td width="400">
-	  <p/>Print:
-	  <div id="output">Nothing to show yet.</div>
-	  <p/>Environment:
-	  <div id="environment">Emtpy.</div>
-	</td>
-    </tr>
-  </body>
+	<head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    	<title>Evaluator</title>
+    	<script type="text/javascript" language="javascript"
+	    	src="replapp/replapp.nocache.js"></script>
+		<script src="ui.js"></script>
+		<style>
+			h1 {
+				text-align: center;
+			}
+			body p {
+				text-align: center;
+			}
+			.output {
+				background-color: #770000;
+				color: #dddddd;
+				font-family: monospace;	
+				border-radius: 5px;
+			}
+			.environment {
+				background-color: #000066;
+				color: #dddddd;
+				font-family: monospace;
+				border-radius: 5px;
+			}
+			.help {
+				background-color: #cccccc;
+				color: #333333;
+				font-family: monospace;
+				border-radius: 15px;
+			}
+		</style>
+  	</head>
+  	<body>
+  		<h1>Scheme interpreter.</h1>
+  		<p>
+  		Write code and press evaluate. See the 
+  		<a href="https://github.com/jonath0000/weirdo-scheme">github page.</a>
+  		</p>
+    	<table align="center">
+      		<tr>
+				<td width="400">
+		 			<textarea type="text" id="code" rows="15" cols="50">(+ 1 2)</textarea>
+		 			<div class="button">
+            			<button id="evaluate">Evaluate</button>
+	  				</div>
+				</td>
+				<td width="400">
+	  				<p/>Print:
+	  				<div id="output" class="output">Nothing to show yet.</div>
+	  				<p/>Environment:
+	  				<div id="environment" class="environment">Emtpy.</div>
+				</td>
+    		</tr>
+
+		</table>
+
+		<hr />
+		<p>Help:</p>
+    	<div id="helpText" class="help" >
+    		Not loaded.
+    	</div>
+  	</body>
 </html>

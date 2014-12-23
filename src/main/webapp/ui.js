@@ -11,3 +11,7 @@ var evaluate = function () {
 window.onload = function() {
     document.getElementById('evaluate').onclick = evaluate;
 }
+
+function onGwtLoaded() {
+	document.getElementById('helpText').innerHTML = window.getHelp().replace(/(?:\r\n|\r|\n)/g, '<br />');;
+}
