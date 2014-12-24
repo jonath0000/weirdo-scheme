@@ -11,7 +11,7 @@ public class Evaluator {
 	
 	public static String getHelp() {
 		String s = "";
-		s += "Syntax: (quote arg0, arg1) Return (arg0 arg1 ...)\n";
+		s += "Syntax: (quote arg0 arg1 ...) Return (arg0 arg1 ...)\n";
 		s += "Syntax: (if (test) (conseq) (alt)) Execute conseq if test true, else execute alt.\n";
 		s += "Syntax: (set! var arg0 arg1 ...) If var is defined anywhere, set it to evaluation of (arg0 arg1 ...)\n";
 		s += "Syntax: (define var arg0 arg1 ...) Define var in current inner environment, to evaluation of (arg0 arg1 ...)\n";

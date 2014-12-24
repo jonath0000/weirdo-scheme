@@ -98,13 +98,17 @@ public class EvaluatorTest {
 		List<EvalItem> parsed = null;
 		try {
 			parsed = ExpressionParser.read("(define fact (lambda (n) (if (= n 0) (quote 1) (* n (fact (+ n -1))))))");
-			
 			Evaluator.evaluate(parsed.get(0), globalEnv);
 			parsed = ExpressionParser.read("(fact 3)");
 			assertEquals("6", Evaluator.evaluate(parsed.get(0), globalEnv).getValue());
-			
 			parsed = ExpressionParser.read("(fact 10)");
 			assertEquals("3628800", Evaluator.evaluate(parsed.get(0), globalEnv).getValue());
+			
+			parsed = ExpressionParser.read("(define riemann (lambda (f x1 x2) ( if (= x1 x2) (f x1)  (+ (riemann f (+ x1 1) x2) (f x1) ))))");
+			Evaluator.evaluate(parsed.get(0), globalEnv);
+			parsed = ExpressionParser.read("(riemann (lambda (x) (* x 2)) 0 10)");
+			assertEquals("110", Evaluator.evaluate(parsed.get(0), globalEnv).getValue());
+			
 			
 		} catch (LispEvaluatorException e1) {
 			System.out.println(e1);
