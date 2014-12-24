@@ -1,6 +1,7 @@
 package net.tapire_solutions.weirdoscheme;
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -52,8 +53,42 @@ public class EvaluatorTest {
 			
 		} catch (LispEvaluatorException e1) {
 			System.out.println(e1);
+			assertTrue(false);
 		} catch (LispParserException e2) {
 			System.out.println(e2);
+			assertTrue(false);
+		}
+	}
+	
+	@Test
+	public void listManipulationTest() {
+		Environment globalEnv = new Environment(null);
+		List<EvalItem> parsed = null;
+		try {
+			parsed = ExpressionParser.read("(first (quote 1 2 3))");
+			assertEquals("1", Evaluator.evaluate(parsed.get(0), globalEnv).getValue());
+			
+			parsed = ExpressionParser.read("(second (quote 1 2 3))");
+			assertEquals("2", Evaluator.evaluate(parsed.get(0), globalEnv).getValue());
+			
+			parsed = ExpressionParser.read("(rest (quote 1 2 3))");
+			assertArrayEquals(new EvalItem[]{new EvalItem("2"), new EvalItem("3")}, 
+					Evaluator.evaluate(parsed.get(0), globalEnv).getList().toArray());
+			
+			parsed = ExpressionParser.read("(map (lambda (x) (* x x)) (quote 1 2 3))");
+			assertArrayEquals(new EvalItem[]{new EvalItem("1"), new EvalItem("4"), new EvalItem("9")},  
+					Evaluator.evaluate(parsed.get(0), globalEnv).getList().toArray());
+			
+			parsed = ExpressionParser.read("(map (lambda (x) (+ x x)) (quote 3))");
+			assertArrayEquals(new EvalItem[]{new EvalItem("6")},  
+					Evaluator.evaluate(parsed.get(0), globalEnv).getList().toArray());
+			
+		} catch (LispEvaluatorException e1) {
+			System.out.println(e1);
+			assertTrue(false);
+		} catch (LispParserException e2) {
+			System.out.println(e2);
+			assertTrue(false);
 		}
 	}
 	
@@ -73,8 +108,10 @@ public class EvaluatorTest {
 			
 		} catch (LispEvaluatorException e1) {
 			System.out.println(e1);
+			assertTrue(false);
 		} catch (LispParserException e2) {
 			System.out.println(e2);
+			assertTrue(false);
 		}
 	}
 

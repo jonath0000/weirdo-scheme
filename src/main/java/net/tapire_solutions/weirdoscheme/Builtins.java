@@ -1,6 +1,8 @@
 package net.tapire_solutions.weirdoscheme;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -164,6 +166,95 @@ public class Builtins {
 		}
 	}
 	
+	private static class ListFirstBuiltIn implements BuiltIn {
+		@Override
+		public EvalItem call(String name, ArrayList<EvalItem> args, Environment env) {
+			if (args.isEmpty() || !args.get(0).isList() || 
+					args.get(0).getList().isEmpty()) return new EvalItem(new ArrayList<EvalItem>());
+			return args.get(0).getList().get(0);
+		}
+		@Override
+		public String getSymbol() {
+			return "first";
+		}
+		@Override
+		public String getHelp() {
+			return "Syntax: (first list) Returns first element in list or empty list.";
+		}
+	}
+	
+	private static class ListSecondBuiltIn implements BuiltIn {
+		@Override
+		public EvalItem call(String name, ArrayList<EvalItem> args, Environment env) {
+			if (args.isEmpty() || !args.get(0).isList() || 
+					args.get(0).getList().size() < 2) return new EvalItem(new ArrayList<EvalItem>());
+			return args.get(0).getList().get(1);
+		}
+		@Override
+		public String getSymbol() {
+			return "second";
+		}
+		@Override
+		public String getHelp() {
+			return "Syntax: (second list) Returns second element in list or empty list.";
+		}
+	}
+	
+	private static class ListRestBuiltIn implements BuiltIn {
+		@Override
+		public EvalItem call(String name, ArrayList<EvalItem> args, Environment env) {
+			if (args.isEmpty() || !args.get(0).isList() || 
+					args.get(0).getList().size() < 2) return new EvalItem(new ArrayList<EvalItem>());
+			if (args.get(0).getList().size() == 2) return args.get(0).getList().get(1);
+			return new EvalItem(args.get(0).getList().subList(1, args.get(0).getList().size()));
+		}
+		@Override
+		public String getSymbol() {
+			return "rest";
+		}
+		@Override
+		public String getHelp() {
+			return "Syntax: (rest list) Returns list elements second, third... etc or empty list.";
+		}
+	}
+	
+	private static class MapBuiltIn implements BuiltIn {
+		@Override
+		public EvalItem call(String name, ArrayList<EvalItem> args, Environment env) {
+			if (args.size() < 2) return new EvalItem(new ArrayList<EvalItem>());
+			if (!args.get(0).isLambda()) return new EvalItem(new ArrayList<EvalItem>());
+			
+			List<EvalItem> in = new ArrayList<EvalItem>();
+			if (args.get(1).isList()) {
+				in = args.get(1).getList();
+			}
+			if (args.get(1).isValue()) {
+				in.add(args.get(1));
+			}
+			
+			List<EvalItem> out = new ArrayList<EvalItem>();
+			for (EvalItem item : in) {
+				try {
+					List<EvalItem> mapped = new ArrayList<EvalItem>();
+					mapped.add(args.get(0));
+					mapped.add(item);
+					out.add(Evaluator.evaluate(new EvalItem(mapped), env));
+				} catch (LispEvaluatorException e1) {
+					System.out.println(e1.getMessage());
+				}
+			}
+			return new EvalItem(out);
+		}
+		@Override
+		public String getSymbol() {
+			return "map";
+		}
+		@Override
+		public String getHelp() {
+			return "Syntax: (map lambda list) Applies lambda with element in list as first argument.";
+		}
+	}
+	
 	private static final Map<String, BuiltIn> builtIns;
 	static {
 		builtIns = new HashMap<String, BuiltIn>();
@@ -183,6 +274,15 @@ public class Builtins {
 		builtIns.put(printEnv.getSymbol(), printEnv);
 		BuiltIn print = new PrintBuiltIn();
 		builtIns.put(print.getSymbol(), print);
+		
+		BuiltIn first = new ListFirstBuiltIn();
+		builtIns.put(first.getSymbol(), first);
+		BuiltIn second = new ListSecondBuiltIn();
+		builtIns.put(second.getSymbol(), second);
+		BuiltIn rest = new ListRestBuiltIn();
+		builtIns.put(rest.getSymbol(), rest);
+		BuiltIn map = new MapBuiltIn();
+		builtIns.put(map.getSymbol(), map);
 	}
 	
 	public static String getHelp() {

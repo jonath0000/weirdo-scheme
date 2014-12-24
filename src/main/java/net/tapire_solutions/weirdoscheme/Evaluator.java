@@ -41,8 +41,10 @@ public class Evaluator {
 			
 			if (evalItem.isList()) {
 				EvalItem first = evalItem.getList().get(0);
-				if (first.isValue()) {
+				if (first.isValue() || first.isLambda()) {
 					String keyword = first.getValue();
+					if (first.isLambda()) keyword = "";
+					
 					List<EvalItem> list = evalItem.getList();
 					
 					if (keyword.equals("quote")) {
@@ -108,7 +110,12 @@ public class Evaluator {
 					}
 					
 					// keyword treated as function name.
-					EvalItem proc = evaluate(first, env);
+					EvalItem proc;
+					if (first.isLambda()) {
+						proc = first;
+					} else {
+						proc = evaluate(first, env);
+					}
 					ArrayList<EvalItem> args = new ArrayList<EvalItem>();
 					for (int i = 1; i < list.size(); i++) {
 						EvalItem item = list.get(i);

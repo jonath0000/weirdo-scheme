@@ -15,6 +15,21 @@ public class EvalItem {
 	private EvalItem body = null;
 	private Environment env = null;
 	
+	@Override	
+	public boolean equals(Object obj) {
+		if (!(obj instanceof EvalItem)) return false;
+		EvalItem other = (EvalItem)obj;
+		if (other.isValue() && isValue() && other.getValue().equals(this.getValue()))
+			return true;
+		if (other.isList() && isList() && other.getList().size() == getList().size()) {
+			for (int i = 0; i < getList().size(); i++) {
+				if (!other.getList().get(i).equals(getList().get(i))) 
+					return false;
+			}
+		}
+		return super.equals(obj);
+	}
+	
 	/**
 	 * As value.
 	 * @param value
