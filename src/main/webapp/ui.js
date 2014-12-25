@@ -4,7 +4,7 @@ var evaluate = function () {
 	var evaluated = window.evalExpression(code);
 
     document.getElementById('output').innerHTML = evaluated;
-    document.getElementById('environment').innerHTML = window.getEnvironment();
+    document.getElementById('environment').innerHTML = window.getEnvironment().replace(/(?:\r\n|\r|\n)/g, '<br />');
 }
 
 
@@ -13,5 +13,5 @@ window.onload = function() {
 }
 
 function onGwtLoaded() {
-	document.getElementById('helpText').innerHTML = window.getHelp().replace(/(?:\r\n|\r|\n)/g, '<br />');;
+	document.getElementById('helpText').innerHTML = window.getHelp().replace(/(?:\r\n|\r|\n)/g, '<br />');
 }
