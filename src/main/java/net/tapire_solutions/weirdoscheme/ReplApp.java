@@ -14,10 +14,16 @@ public class ReplApp {
 		return help;
 	}
 	
-	public static String evaluateLine(String line, Environment globalEnv) {
-		line = line.replace("\n", " ");
+	public static String evaluateLine(String program, Environment globalEnv) {
+		String [] lines = program.split("\n");
+		String expression = "";
+		for (String line : lines) {
+			if (!line.trim().startsWith(";")) {
+				expression += line + " ";
+			}
+		}
 		try {
-			List<EvalItem> parsed = ExpressionParser.read(line);
+			List<EvalItem> parsed = ExpressionParser.read(expression);
 			EvalItem output = null;
 			for (EvalItem parsedItem : parsed) {
 				output = Evaluator.evaluate(parsedItem, globalEnv); // only last result is returned.

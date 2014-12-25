@@ -32,7 +32,7 @@ public class DesktopApp {
 	        while(scanner.hasNextLine()) {   
 	        	String line = scanner.nextLine();
 	        	if (!line.trim().startsWith(";")) {
-	        		fileContents.append(line + " ");
+	        		fileContents.append(line + "\n");
 	        	}
 	        }
 	        return fileContents.toString();
