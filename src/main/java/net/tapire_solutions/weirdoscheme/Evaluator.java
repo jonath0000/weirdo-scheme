@@ -49,7 +49,7 @@ public class Evaluator {
 					
 					if (keyword.equals("quote")) {
 						EvalItem ret = new EvalItem(list.subList(1, list.size()));
-						if (ret.isList() && ret.getList().size() <= 1) {
+						if (ret.isList() && ret.getList().size() == 1) {
 							ret = ret.getList().get(0);
 						}
 						return ret;

@@ -83,6 +83,18 @@ public class EvaluatorTest {
 			assertArrayEquals(new EvalItem[]{new EvalItem("6")},  
 					Evaluator.evaluate(parsed.get(0), globalEnv).getList().toArray());
 			
+			parsed = ExpressionParser.read("(cons 1 2)");
+			assertArrayEquals(new EvalItem[]{new EvalItem("1"), new EvalItem("2")},  
+					Evaluator.evaluate(parsed.get(0), globalEnv).getList().toArray());
+			
+			parsed = ExpressionParser.read("(cons 1 (quote 4 5 ))");
+			assertArrayEquals(new EvalItem[]{new EvalItem("1"), new EvalItem("4"), new EvalItem("5")},  
+					Evaluator.evaluate(parsed.get(0), globalEnv).getList().toArray());
+			
+			parsed = ExpressionParser.read("(cons 1 (quote ))");
+			assertArrayEquals(new EvalItem[]{new EvalItem("1")},  
+					Evaluator.evaluate(parsed.get(0), globalEnv).getList().toArray());
+			
 		} catch (LispEvaluatorException e1) {
 			System.out.println(e1);
 			assertTrue(false);

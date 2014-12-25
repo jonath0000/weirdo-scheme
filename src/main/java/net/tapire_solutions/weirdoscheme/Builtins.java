@@ -255,6 +255,33 @@ public class Builtins {
 		}
 	}
 	
+	private static class ConsBuiltIn implements BuiltIn {
+		@Override
+		public EvalItem call(String name, ArrayList<EvalItem> args, Environment env) {
+			if (args.size() != 2) return new EvalItem(new ArrayList<EvalItem>());
+			
+			List<EvalItem> out = new ArrayList<EvalItem>();
+			out.add(args.get(0));
+			
+			if (args.get(1).isList()) {
+				 for (EvalItem evalItem : args.get(1).getList()) {
+					 out.add(evalItem);
+				 }
+			} else {
+				out.add(args.get(1));
+			}
+			return new EvalItem(out);
+		}
+		@Override
+		public String getSymbol() {
+			return "cons";
+		}
+		@Override
+		public String getHelp() {
+			return "Syntax: (cons value1 value2|list) Constructs a list (value1 value2) or (value1 list:0 list:1 ...)";
+		}
+	}
+	
 	private static final Map<String, BuiltIn> builtIns;
 	static {
 		builtIns = new HashMap<String, BuiltIn>();
@@ -283,6 +310,8 @@ public class Builtins {
 		builtIns.put(rest.getSymbol(), rest);
 		BuiltIn map = new MapBuiltIn();
 		builtIns.put(map.getSymbol(), map);
+		BuiltIn cons = new ConsBuiltIn();
+		builtIns.put(cons.getSymbol(), cons);
 	}
 	
 	public static String getHelp() {

@@ -7,3 +7,5 @@
 (print (first (quote 1 2)))
 
 (print (rest (quote 1 2 3)))
+
+(print (cons 1 (quote 2 3)))
