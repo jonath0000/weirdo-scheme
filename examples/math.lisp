@@ -22,9 +22,19 @@
     )
   )
 
+(define range 
+  (lambda (n m)
+    (if (= n (+ m 1))
+	(quote )
+      (cons n (range (+ n 1) m))
+      )
+    )
+  )
+
 ; test
 (define factResult (fact 3))
 (define derivResult (deriv (lambda (x) (* x x)) 100 2))
 (define riemannResult (riemann (lambda (x) (* x 2)) 0 10))
+(define mappingResult (map (lambda (x) (+ x 1)) (range 0 10)))
 
 (printenv)
