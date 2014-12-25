@@ -2,6 +2,7 @@ package net.tapire_solutions.desktopapp;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
@@ -25,20 +26,13 @@ public class DesktopApp {
 	}
 	
 	private static String readFileIntoString(String path) throws IOException {
-	    File file = new File(path);
-	    StringBuilder fileContents = new StringBuilder((int)file.length());
-	    Scanner scanner = new Scanner(file);
-	    try {
-	        while(scanner.hasNextLine()) {   
-	        	String line = scanner.nextLine();
-	        	if (!line.trim().startsWith(";")) {
-	        		fileContents.append(line + "\n");
-	        	}
-	        }
-	        return fileContents.toString();
-	    } finally {
-	        scanner.close();
-	    }
+		File file = new File(path);
+		FileInputStream fis = new FileInputStream(file);
+		byte[] data = new byte[(int) file.length()];
+		fis.read(data);
+		fis.close();
+		String str = new String(data, "UTF-8");
+		return str;
 	}
 	
 	private static Map<String, String> parseArguments(String args[]) {

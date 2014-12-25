@@ -93,7 +93,9 @@ public class ExpressionParser {
 		for (String token : tokensRaw) {
 			if (!token.isEmpty()) {
 				token = token.trim();
-				tokens.add(token);
+				if (!token.isEmpty()) {
+					tokens.add(token);
+				}
 			}
 		}
 		return tokens;

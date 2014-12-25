@@ -158,7 +158,7 @@ public class Builtins {
 		}
 		@Override
 		public String getSymbol() {
-			return "printenv";
+			return "print";
 		}
 		@Override
 		public String getHelp() {

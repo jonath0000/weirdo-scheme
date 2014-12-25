@@ -31,12 +31,12 @@ public class Environment {
 	
 	@Override
 	public String toString() {
-		String descr = "Environment=(";
+		String descr = "Environment=(\n";
 		for (String key : map.keySet()) {
-			descr += key + "=" + map.get(key).toStringSelectRecurse(false) + ", ";
+			descr += "   " + key + "=" + map.get(key).toStringSelectRecurse(false) + "\n";
 		}
 		if (outer != null) {
-			descr += "OuterEnvironment={" + outer + "}";
+			descr += "OuterEnvironment={" + outer + "}\n";
 		}
 		return descr + ")";
 	}
